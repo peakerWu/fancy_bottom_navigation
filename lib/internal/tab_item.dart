@@ -9,14 +9,17 @@ const double ALPHA_ON = 1;
 const int ANIM_DURATION = 300;
 
 class TabItem extends StatelessWidget {
-  TabItem(
-      {@required this.uniqueKey,
-        @required this.selected,
-        @required this.iconData,
-        @required this.title,
-        @required this.callbackFunction,
-        @required this.textColor,
-        @required this.iconColor});
+  TabItem({
+    @required this.uniqueKey,
+    @required this.selected,
+    @required this.iconData,
+    @required this.title,
+    @required this.callbackFunction,
+    @required this.textColor,
+    @required this.iconColor,
+    this.activeTextColor,
+    this.activeIconColor,
+  });
 
   final UniqueKey uniqueKey;
   final String title;
@@ -24,7 +27,9 @@ class TabItem extends StatelessWidget {
   final bool selected;
   final Function(UniqueKey uniqueKey) callbackFunction;
   final Color textColor;
+  final Color activeTextColor;
   final Color iconColor;
+  final Color activeIconColor;
 
   final double iconYAlign = ICON_ON;
   final double textYAlign = TEXT_OFF;
@@ -33,53 +38,46 @@ class TabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            child: AnimatedAlign(
+      child: GestureDetector(
+        onTap: selected
+            ? null
+            : () {
+                callbackFunction(uniqueKey);
+              },
+        behavior: HitTestBehavior.translucent,
+        child: Container(
+          padding: EdgeInsets.only(top: 6),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              AnimatedAlign(
                 duration: Duration(milliseconds: ANIM_DURATION),
-                alignment: Alignment(0, (selected) ? TEXT_ON : TEXT_OFF),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    title,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600, color: textColor),
-                  ),
-                )),
-          ),
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            child: AnimatedAlign(
-              duration: Duration(milliseconds: ANIM_DURATION),
-              curve: Curves.easeIn,
-              alignment: Alignment(0, (selected) ? ICON_OFF : ICON_ON),
-              child: AnimatedOpacity(
-                duration: Duration(milliseconds: ANIM_DURATION),
-                opacity: (selected) ? ALPHA_OFF : ALPHA_ON,
-                child: IconButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  padding: EdgeInsets.all(0),
-                  alignment: Alignment(0, 0),
-                  icon: Icon(
+                curve: Curves.easeIn,
+                alignment: Alignment(0, (selected) ? ICON_OFF : ICON_ON),
+                child: AnimatedOpacity(
+                  duration: Duration(milliseconds: ANIM_DURATION),
+                  opacity: (selected) ? ALPHA_OFF : ALPHA_ON,
+                  child: Icon(
                     iconData,
-                    color: iconColor,
+                    color: selected ? activeIconColor : iconColor,
+                    // size: 22,
                   ),
-                  onPressed: () {
-                    callbackFunction(uniqueKey);
-                  },
                 ),
               ),
-            ),
-          )
-        ],
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10,
+                    color: selected ? activeTextColor : textColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

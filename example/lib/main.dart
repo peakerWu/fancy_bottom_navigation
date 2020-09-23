@@ -1,6 +1,7 @@
-import 'package:example/second_page.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
+
+import 'second_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -34,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Fancy Bottom Navigation"),
       ),
       body: Container(
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: BoxDecoration(color: Colors.cyanAccent),
         child: Center(
           child: _getPage(currentPage),
         ),
@@ -42,22 +43,37 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: FancyBottomNavigation(
         tabs: [
           TabData(
-              iconData: Icons.home,
-              title: "Home",
-              onclick: () {
-                final FancyBottomNavigationState fState =
-                    bottomNavigationKey.currentState;
-                fState.setPage(2);
-              }),
+            iconData: Icons.home,
+            title: "Home",
+            // onclick: () {
+            //   final FancyBottomNavigationState fState =
+            //       bottomNavigationKey.currentState;
+            //   fState.setPage(2);
+            // },
+          ),
           TabData(
               iconData: Icons.search,
               title: "Search",
               onclick: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => SecondPage()))),
-          TabData(iconData: Icons.shopping_cart, title: "Basket")
+          TabData(iconData: Icons.shopping_cart, title: "Basket"),
+          TabData(iconData: Icons.near_me, title: "Location"),
         ],
         initialSelection: 1,
         key: bottomNavigationKey,
+        activeIconColor: Colors.white,
+        activeTextColor: Color(0xff4D91F7),
+        inactiveIconColor: Color(0xff999999),
+        // circleColor: Color(0xff4D91F7),
+        gradient: LinearGradient(
+          colors: [
+            Color(0xff69ADF9),
+            Color(0xff4C91F6),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        textColor: Color(0xff999999),
         onTabChangedListener: (position) {
           setState(() {
             currentPage = position;
