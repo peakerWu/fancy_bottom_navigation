@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         tabs: [
           TabData(
             iconData: Icons.home,
-            title: "Home",
+            title: "首页",
             // onclick: () {
             //   final FancyBottomNavigationState fState =
             //       bottomNavigationKey.currentState;
@@ -53,11 +53,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           TabData(
               iconData: Icons.search,
-              title: "Search",
+              title: "搜索",
               onclick: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => SecondPage()))),
-          TabData(iconData: Icons.shopping_cart, title: "Basket"),
-          TabData(iconData: Icons.near_me, title: "Location"),
+          TabData(iconData: Icons.shopping_cart, title: "消息"),
+          TabData(iconData: Icons.near_me, title: "我的"),
         ],
         initialSelection: 1,
         key: bottomNavigationKey,

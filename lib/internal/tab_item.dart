@@ -65,7 +65,7 @@ class TabItem extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 4),
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
                   title,
                   style: TextStyle(
