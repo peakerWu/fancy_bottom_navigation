@@ -129,8 +129,8 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
       alignment: Alignment.center,
       children: <Widget>[
         Container(
-          height: BAR_HEIGHT,
-          margin:
+          height: BAR_HEIGHT + MediaQuery.of(context).padding.bottom,
+          padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
           decoration: BoxDecoration(color: barBackgroundColor, boxShadow: [
             BoxShadow(
