@@ -68,7 +68,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    activeIcon = widget.tabs[currentSelected].iconData;
+    activeIcon = widget.tabs[currentSelected].selectedIconData;
 
     circleColor = (widget.circleColor == null)
         ? (Theme.of(context).brightness == Brightness.dark)
@@ -117,7 +117,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
       setState(() {
         currentSelected = selected;
         _circleAlignX = -1 + (2 / (widget.tabs.length - 1) * selected);
-        nextIcon = widget.tabs[selected].iconData;
+        nextIcon = widget.tabs[selected].selectedIconData;
       });
     }
   }
@@ -160,83 +160,87 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
           ),
         ),
         Positioned.fill(
-          top: -(CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE) * 1 / 3,
-          child: Container(
-            child: AnimatedAlign(
-              duration: Duration(milliseconds: ANIM_DURATION),
-              curve: Curves.easeOut,
-              alignment: Alignment(_circleAlignX, 1),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    bottom: 15 + MediaQuery.of(context).padding.bottom),
-                child: FractionallySizedBox(
-                  widthFactor: 1 / widget.tabs.length,
-                  child: GestureDetector(
-                    onTap: widget.tabs[currentSelected].onclick,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                          height:
-                              CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE,
-                          width:
-                              CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE,
-                          child: ClipRect(
-                            clipper: HalfClipper(),
-                            child: Container(
-                              child: Center(
-                                child: Container(
-                                  width: CIRCLE_SIZE + CIRCLE_OUTLINE,
-                                  height: CIRCLE_SIZE + CIRCLE_OUTLINE,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black12, blurRadius: 8)
-                                    ],
+          top: -(CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE) / 3,
+          child: IgnorePointer(
+            child: Container(
+              // color: Colors.blue,
+              child: AnimatedAlign(
+                duration: Duration(milliseconds: ANIM_DURATION),
+                curve: Curves.easeOut,
+                alignment: Alignment(_circleAlignX, 1),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: 15 + MediaQuery.of(context).padding.bottom),
+                  child: FractionallySizedBox(
+                    widthFactor: 1 / widget.tabs.length,
+                    child: GestureDetector(
+                      onTap: widget.tabs[currentSelected].onclick,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            height:
+                                CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE,
+                            width:
+                                CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE,
+                            child: ClipRect(
+                              clipper: HalfClipper(),
+                              child: Container(
+                                child: Center(
+                                  child: Container(
+                                    width: CIRCLE_SIZE + CIRCLE_OUTLINE,
+                                    height: CIRCLE_SIZE + CIRCLE_OUTLINE,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.black12,
+                                            blurRadius: 8)
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: ARC_HEIGHT,
-                          width: ARC_WIDTH,
-                          child: CustomPaint(
-                            painter: HalfPainter(barBackgroundColor),
+                          SizedBox(
+                            height: ARC_HEIGHT,
+                            width: ARC_WIDTH,
+                            child: CustomPaint(
+                              painter: HalfPainter(barBackgroundColor),
+                            ),
                           ),
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 10,
-                          child: SizedBox(
-                            height: CIRCLE_SIZE,
-                            width: CIRCLE_SIZE,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                // color: circleColor,
-                                gradient: widget.gradient,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: AnimatedOpacity(
-                                  duration: Duration(
-                                      milliseconds: ANIM_DURATION ~/ 5),
-                                  opacity: _circleIconAlpha,
-                                  child: Icon(
-                                    activeIcon,
-                                    color: activeIconColor,
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            top: 10,
+                            child: SizedBox(
+                              height: CIRCLE_SIZE,
+                              width: CIRCLE_SIZE,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  // color: circleColor,
+                                  gradient: widget.gradient,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: AnimatedOpacity(
+                                    duration: Duration(
+                                        milliseconds: ANIM_DURATION ~/ 5),
+                                    opacity: _circleIconAlpha,
+                                    child: Icon(
+                                      activeIcon,
+                                      color: activeIconColor,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -276,9 +280,15 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
 }
 
 class TabData {
-  TabData({@required this.iconData, @required this.title, this.onclick});
+  TabData({
+    @required this.iconData,
+    @required this.selectedIconData,
+    @required this.title,
+    this.onclick,
+  });
 
   IconData iconData;
+  IconData selectedIconData;
   String title;
   Function onclick;
   final UniqueKey key = UniqueKey();

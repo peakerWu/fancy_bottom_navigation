@@ -6,7 +6,7 @@ const double TEXT_OFF = 3;
 const double TEXT_ON = 1;
 const double ALPHA_OFF = 0;
 const double ALPHA_ON = 1;
-const int ANIM_DURATION = 300;
+const int ANIM_DURATION = 250;
 
 class TabItem extends StatelessWidget {
   TabItem({
@@ -19,11 +19,13 @@ class TabItem extends StatelessWidget {
     @required this.iconColor,
     this.activeTextColor,
     this.activeIconColor,
+    this.selectedIconData,
   });
 
   final UniqueKey uniqueKey;
   final String title;
   final IconData iconData;
+  final IconData selectedIconData;
   final bool selected;
   final Function(UniqueKey uniqueKey) callbackFunction;
   final Color textColor;

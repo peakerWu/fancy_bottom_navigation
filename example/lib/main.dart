@@ -35,15 +35,34 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Fancy Bottom Navigation"),
       ),
       body: Container(
+        height: double.infinity,
         decoration: BoxDecoration(color: Colors.cyanAccent),
-        child: Center(
-          child: _getPage(currentPage),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Center(
+              child: _getPage(currentPage),
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                debugPrint("12312");
+              },
+              child: Container(
+                color: Colors.red,
+                height: 50,
+                width: double.infinity,
+                child: Text('data'),
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: FancyBottomNavigation(
         tabs: [
           TabData(
-            iconData: Icons.home,
+            selectedIconData: Icons.home,
+            iconData: Icons.nature,
             title: "首页",
             // onclick: () {
             //   final FancyBottomNavigationState fState =
@@ -52,12 +71,20 @@ class _MyHomePageState extends State<MyHomePage> {
             // },
           ),
           TabData(
-              iconData: Icons.search,
-              title: "搜索",
-              onclick: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => SecondPage()))),
-          TabData(iconData: Icons.shopping_cart, title: "消息"),
-          TabData(iconData: Icons.near_me, title: "我的"),
+            iconData: Icons.search,
+            title: "搜索",
+            onclick: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => SecondPage())),
+            selectedIconData: Icons.nature,
+          ),
+          TabData(
+              iconData: Icons.shopping_cart,
+              selectedIconData: Icons.nature,
+              title: "消息"),
+          TabData(
+              iconData: Icons.near_me,
+              selectedIconData: Icons.nature,
+              title: "我的"),
         ],
         initialSelection: 1,
         key: bottomNavigationKey,
