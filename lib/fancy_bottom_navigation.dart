@@ -233,6 +233,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                                     child: Icon(
                                       activeIcon,
                                       color: activeIconColor,
+                                      size: 18,
                                     ),
                                   ),
                                 ),
