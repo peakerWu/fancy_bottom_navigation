@@ -20,10 +20,12 @@ class TabItem extends StatelessWidget {
     this.activeTextColor,
     this.activeIconColor,
     this.selectedIconData,
+    this.badge,
   });
 
   final UniqueKey uniqueKey;
   final String title;
+  final String badge;
   final IconData iconData;
   final IconData selectedIconData;
   final bool selected;
@@ -59,10 +61,35 @@ class TabItem extends StatelessWidget {
                 child: AnimatedOpacity(
                   duration: Duration(milliseconds: ANIM_DURATION),
                   opacity: (selected) ? ALPHA_OFF : ALPHA_ON,
-                  child: Icon(
-                    iconData,
-                    color: selected ? activeIconColor : iconColor,
-                    // size: 22,
+                  child: Stack(
+                    overflow: Overflow.visible,
+                    children: <Widget>[
+                      Icon(
+                        iconData,
+                        color: selected ? activeIconColor : iconColor,
+                        // size: 22,
+                      ),
+                      (badge != null && badge.length >0) ? Positioned(
+                        top: -2,
+                        right: -4,
+                        child: Container(
+                          constraints:
+                              BoxConstraints(maxHeight: 16, maxWidth: 16),
+                          decoration: BoxDecoration(
+                            color: Color(0xffFF3B30),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          padding: EdgeInsets.all(2),
+                          child: Text(
+                            badge,
+                            style: TextStyle(
+                              fontSize: 9,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ) : SizedBox.shrink(),
+                    ],
                   ),
                 ),
               ),

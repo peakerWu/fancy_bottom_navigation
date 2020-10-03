@@ -78,9 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
             selectedIconData: Icons.nature,
           ),
           TabData(
-              iconData: Icons.shopping_cart,
-              selectedIconData: Icons.nature,
-              title: "消息"),
+            iconData: Icons.shopping_cart,
+            selectedIconData: Icons.nature,
+            title: "消息",
+            badge: '10',
+          ),
           TabData(
               iconData: Icons.near_me,
               selectedIconData: Icons.nature,

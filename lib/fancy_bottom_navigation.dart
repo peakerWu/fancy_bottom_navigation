@@ -149,6 +149,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                     activeIconColor: activeIconColor,
                     textColor: textColor,
                     activeTextColor: activeTextColor,
+                    badge: t.badge,
                     callbackFunction: (uniqueKey) {
                       int selected = widget.tabs
                           .indexWhere((tabData) => tabData.key == uniqueKey);
@@ -214,32 +215,63 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                           Positioned(
                             left: 0,
                             right: 0,
-                            top: 10,
-                            child: SizedBox(
-                              height: CIRCLE_SIZE,
-                              width: CIRCLE_SIZE,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // color: circleColor,
-                                  gradient: widget.gradient,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(0.0),
-                                  child: AnimatedOpacity(
-                                    duration: Duration(
-                                        milliseconds: ANIM_DURATION ~/ 5),
-                                    opacity: _circleIconAlpha,
-                                    child: Icon(
-                                      activeIcon,
-                                      color: activeIconColor,
-                                      size: 18,
+                            top: 8,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: <Widget>[
+                                Container(
+                                  height: CIRCLE_SIZE + 6,
+                                  width: CIRCLE_SIZE + 6,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      // color: Colors.red,
+                                      gradient: widget.gradient,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: AnimatedOpacity(
+                                        duration: Duration(
+                                            milliseconds: ANIM_DURATION ~/ 5),
+                                        opacity: _circleIconAlpha,
+                                        child: Icon(
+                                          activeIcon,
+                                          color: activeIconColor,
+                                          size: 18,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                (widget.tabs[currentSelected].badge != null &&
+                                        widget.tabs[currentSelected].badge
+                                                .length >
+                                            0)
+                                    ? Positioned(
+                                        right: CIRCLE_SIZE - 4,
+                                        top: 0,
+                                        child: Container(
+                                          width: 16,
+                                          height: 16,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xffFF3B30),
+                                            borderRadius:
+                                                BorderRadius.circular(14),
+                                          ),
+                                          padding: EdgeInsets.all(2),
+                                          child: Text(
+                                            widget.tabs[currentSelected].badge,
+                                            style: TextStyle(
+                                              fontSize: 9,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox.shrink(),
+                              ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -285,12 +317,14 @@ class TabData {
     @required this.iconData,
     @required this.selectedIconData,
     @required this.title,
+    this.badge,
     this.onclick,
   });
 
   IconData iconData;
   IconData selectedIconData;
   String title;
+  String badge;
   Function onclick;
   final UniqueKey key = UniqueKey();
 }
