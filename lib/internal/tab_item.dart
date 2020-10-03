@@ -73,6 +73,7 @@ class TabItem extends StatelessWidget {
                         top: -2,
                         right: -4,
                         child: Container(
+                          alignment: Alignment.center,
                           constraints:
                               BoxConstraints(maxHeight: 16, maxWidth: 16),
                           decoration: BoxDecoration(
@@ -80,8 +81,10 @@ class TabItem extends StatelessWidget {
                             borderRadius: BorderRadius.circular(14),
                           ),
                           padding: EdgeInsets.all(2),
+                          
                           child: Text(
                             badge,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 9,
                               color: Colors.white,

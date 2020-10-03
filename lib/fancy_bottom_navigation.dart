@@ -258,9 +258,11 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                                             borderRadius:
                                                 BorderRadius.circular(14),
                                           ),
+                                          alignment: Alignment.center,
                                           padding: EdgeInsets.all(2),
                                           child: Text(
                                             widget.tabs[currentSelected].badge,
+                                            textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 9,
                                               color: Colors.white,
