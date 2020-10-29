@@ -1,18 +1,18 @@
 library fancy_bottom_navigation;
 
-import 'dart:async';
-
-import 'package:fancy_bottom_navigation/internal/tab_item.dart';
-import 'package:fancy_bottom_navigation/paint/half_clipper.dart';
-import 'package:fancy_bottom_navigation/paint/half_painter.dart';
 import 'package:flutter/material.dart';
 
-const double CIRCLE_SIZE = 34;
+import 'internal/tab_item.dart';
+import 'paint/half_clipper.dart';
+import 'paint/half_painter.dart';
+
+const double CIRCLE_SIZE = 24;
 const double ARC_HEIGHT = 70;
-const double ARC_WIDTH = 85;
-const double CIRCLE_OUTLINE = 10;
+const double ARC_WIDTH = 75;
+const double CIRCLE_OUTLINE = 5;
 const double SHADOW_ALLOWANCE = 4;
 const double BAR_HEIGHT = 50;
+const int ANIM_DURATION = 250;
 
 class FancyBottomNavigation extends StatefulWidget {
   FancyBottomNavigation({
@@ -49,7 +49,7 @@ class FancyBottomNavigation extends StatefulWidget {
 }
 
 class FancyBottomNavigationState extends State<FancyBottomNavigation>
-    with TickerProviderStateMixin, RouteAware {
+    with TickerProviderStateMixin, RouteAware, SingleTickerProviderStateMixin {
   IconData nextIcon = Icons.search;
   IconData activeIcon = Icons.search;
 
@@ -63,6 +63,8 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
   Color barBackgroundColor;
   Color textColor;
   Color activeTextColor;
+
+  Matrix4 _transform = Matrix4.translationValues(0, 0, 0);
 
   @override
   void didChangeDependencies() {
@@ -161,120 +163,97 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
           ),
         ),
         Positioned.fill(
-          top: -(CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE) / 3,
+          top: -6,
           child: IgnorePointer(
-            child: Container(
-              // color: Colors.blue,
-              child: AnimatedAlign(
-                duration: Duration(milliseconds: ANIM_DURATION),
-                curve: Curves.easeOut,
-                alignment: Alignment(_circleAlignX, 1),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      bottom: 15 + MediaQuery.of(context).padding.bottom),
-                  child: FractionallySizedBox(
-                    widthFactor: 1 / widget.tabs.length,
-                    child: GestureDetector(
-                      onTap: widget.tabs[currentSelected].onclick,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            height:
-                                CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE,
-                            width:
-                                CIRCLE_SIZE + CIRCLE_OUTLINE + SHADOW_ALLOWANCE,
-                            child: ClipRect(
-                              clipper: HalfClipper(),
-                              child: Container(
-                                child: Center(
-                                  child: Container(
-                                    width: CIRCLE_SIZE + CIRCLE_OUTLINE,
-                                    height: CIRCLE_SIZE + CIRCLE_OUTLINE,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.black12,
-                                            blurRadius: 8)
-                                      ],
+            child: AnimatedContainer(
+              duration: _circleIconAlpha == 0
+                  ? Duration(milliseconds: 0)
+                  : Duration(milliseconds: 100),
+              transform: _transform,
+              curve: Cubic(.33,.03,.66,2.49),
+              child: Container(
+                // color: Colors.blue,
+                child: AnimatedAlign(
+                  duration: Duration(milliseconds: 0),
+                  curve: Curves.easeOut,
+                  alignment: Alignment(_circleAlignX, 1),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        bottom: 15 + MediaQuery.of(context).padding.bottom),
+                    child: FractionallySizedBox(
+                      widthFactor: 1 / widget.tabs.length,
+                      child: GestureDetector(
+                        onTap: widget.tabs[currentSelected].onclick,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              height: CIRCLE_SIZE +
+                                  CIRCLE_OUTLINE +
+                                  SHADOW_ALLOWANCE,
+                              width: CIRCLE_SIZE +
+                                  CIRCLE_OUTLINE +
+                                  SHADOW_ALLOWANCE,
+                              child: ClipRect(
+                                clipper: HalfClipper(),
+                                child: Container(
+                                  child: Center(
+                                    child: Container(
+                                      width: CIRCLE_SIZE + CIRCLE_OUTLINE,
+                                      height: CIRCLE_SIZE + CIRCLE_OUTLINE,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black12,
+                                              blurRadius: 8)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: ARC_HEIGHT,
-                            width: ARC_WIDTH,
-                            child: CustomPaint(
-                              painter: HalfPainter(barBackgroundColor),
+                            // 白色圆圈背景
+                            SizedBox(
+                              height: ARC_HEIGHT,
+                              width: ARC_WIDTH,
+                              child: CustomPaint(
+                                painter: HalfPainter(barBackgroundColor),
+                              ),
                             ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            top: 8,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: <Widget>[
-                                Container(
-                                  height: CIRCLE_SIZE + 6,
-                                  width: CIRCLE_SIZE + 6,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      // color: Colors.red,
-                                      gradient: widget.gradient,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(0.0),
-                                      child: AnimatedOpacity(
-                                        duration: Duration(
-                                            milliseconds: ANIM_DURATION ~/ 5),
-                                        opacity: _circleIconAlpha,
+                            // 蓝色圆圈
+                            Positioned(
+                              top: 8,
+                              left: 0,
+                              right: 0,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: CIRCLE_SIZE + 6,
+                                    width: CIRCLE_SIZE + 6,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: widget.gradient,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(0.0),
                                         child: Icon(
                                           activeIcon,
                                           color: activeIconColor,
-                                          size: 18,
+                                          size: 16,
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                (widget.tabs[currentSelected].badge != null &&
-                                        widget.tabs[currentSelected].badge
-                                                .length >
-                                            0)
-                                    ? Positioned(
-                                        right: CIRCLE_SIZE - 4,
-                                        top: 0,
-                                        child: Container(
-                                          width: 16,
-                                          height: 16,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xffFF3B30),
-                                            borderRadius:
-                                                BorderRadius.circular(14),
-                                          ),
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.all(2),
-                                          child: Text(
-                                            widget.tabs[currentSelected].badge,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 9,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : SizedBox.shrink(),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -288,19 +267,23 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
   }
 
   _initAnimationAndStart(double from, double to) {
-    _circleIconAlpha = 0;
-
-    Future.delayed(Duration(milliseconds: ANIM_DURATION ~/ 5), () {
+    setState(() {
+      _circleIconAlpha = 0;
+      activeIcon = nextIcon;
+      _transform = Matrix4.translationValues(0, 0, 0);
+    });
+    Future.delayed(Duration(milliseconds: ANIM_DURATION ~/ 8), () {
       setState(() {
-        activeIcon = nextIcon;
+        _transform = Matrix4.translationValues(0, -5, 0);
+        _circleIconAlpha = 1;
       });
     }).then((_) {
-      Future.delayed(Duration(milliseconds: (ANIM_DURATION ~/ 5 * 3)), () {
-        setState(() {
-          _circleIconAlpha = 1;
-        });
-      });
+      // setState(() {
+      //   _transform = Matrix4.translationValues(0, -4, 0);
+      //   _circleIconAlpha = 1;
+      // });
     });
+    // Future.delayed(Duration(milliseconds: (ANIM_DURATION ~/ 5 * 3)), () {});
   }
 
   void setPage(int page) {
