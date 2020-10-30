@@ -170,7 +170,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                   ? Duration(milliseconds: 0)
                   : Duration(milliseconds: 100),
               transform: _transform,
-              curve: Cubic(.33,.03,.66,2.49),
+              // curve: Cubic(.33,.03,.66,2.49),
               child: Container(
                 // color: Colors.blue,
                 child: AnimatedAlign(
