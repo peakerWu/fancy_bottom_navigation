@@ -31,7 +31,7 @@ class FancyBottomNavigation extends StatefulWidget {
         assert(tabs != null),
         assert(tabs.length > 1 && tabs.length < 5);
 
-  final Function(int position) onTabChangedListener;
+  final Function(int position, bool selected) onTabChangedListener;
   final Color circleColor;
   final Color activeIconColor;
   final Color inactiveIconColor;
@@ -152,10 +152,10 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                     textColor: textColor,
                     activeTextColor: activeTextColor,
                     badge: t.badge,
-                    callbackFunction: (uniqueKey) {
-                      int selected = widget.tabs
+                    callbackFunction: (uniqueKey, selected) {
+                      int selectedIndex = widget.tabs
                           .indexWhere((tabData) => tabData.key == uniqueKey);
-                      widget.onTabChangedListener(selected);
+                      widget.onTabChangedListener(selectedIndex, selected);
                       _setSelected(uniqueKey);
                       _initAnimationAndStart(_circleAlignX, 1);
                     }))
@@ -287,7 +287,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
   }
 
   void setPage(int page) {
-    widget.onTabChangedListener(page);
+    widget.onTabChangedListener(page, true);
     _setSelected(widget.tabs[page].key);
     _initAnimationAndStart(_circleAlignX, 1);
 

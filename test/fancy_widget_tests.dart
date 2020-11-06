@@ -15,10 +15,10 @@ void main() {
   testWidgets('Fancy Nav has correct tabs', (WidgetTester tester) async {
     FancyBottomNavigation fn = FancyBottomNavigation(
       tabs: [
-        TabData(iconData: Icons.home, title: "Home"),
-        TabData(iconData: Icons.search, title: "Search")
+        TabData(iconData: Icons.home, title: "Home", selectedIconData: null),
+        TabData(iconData: Icons.search, title: "Search", selectedIconData: null)
       ],
-      onTabChangedListener: (position) {},
+      onTabChangedListener: (position, index) {},
     );
 
     await tester.pumpWidget(makeTestableWidget(child: fn));
@@ -43,10 +43,10 @@ void main() {
   testWidgets('Clicking icon moves the circle', (WidgetTester tester) async {
     FancyBottomNavigation fn = FancyBottomNavigation(
       tabs: [
-        TabData(iconData: Icons.home, title: "Home"),
-        TabData(iconData: Icons.search, title: "Search")
+        TabData(iconData: Icons.home, title: "Home", selectedIconData: null),
+        TabData(iconData: Icons.search, title: "Search", selectedIconData: null)
       ],
-      onTabChangedListener: (position) {},
+      onTabChangedListener: (position, index) {},
     );
 
     await tester.pumpWidget(makeTestableWidget(child: fn));

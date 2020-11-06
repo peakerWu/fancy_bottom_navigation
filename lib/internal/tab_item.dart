@@ -29,7 +29,7 @@ class TabItem extends StatelessWidget {
   final IconData iconData;
   final IconData selectedIconData;
   final bool selected;
-  final Function(UniqueKey uniqueKey) callbackFunction;
+  final Function(UniqueKey uniqueKey, bool selected) callbackFunction;
   final Color textColor;
   final Color activeTextColor;
   final Color iconColor;
@@ -43,11 +43,9 @@ class TabItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
-        onTap: selected
-            ? null
-            : () {
-                callbackFunction(uniqueKey);
-              },
+        onTap: () {
+          callbackFunction(uniqueKey, selected);
+        },
         behavior: HitTestBehavior.translucent,
         child: Container(
           padding: EdgeInsets.only(top: 6),
@@ -69,29 +67,30 @@ class TabItem extends StatelessWidget {
                         color: selected ? activeIconColor : iconColor,
                         // size: 22,
                       ),
-                      (badge != null && badge.length >0) ? Positioned(
-                        top: -2,
-                        right: -4,
-                        child: Container(
-                          alignment: Alignment.center,
-                          constraints:
-                              BoxConstraints(maxHeight: 16, maxWidth: 16),
-                          decoration: BoxDecoration(
-                            color: Color(0xffFF3B30),
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          padding: EdgeInsets.all(2),
-                          
-                          child: Text(
-                            badge,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 9,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ) : SizedBox.shrink(),
+                      (badge != null && badge.length > 0)
+                          ? Positioned(
+                              top: -2,
+                              right: -4,
+                              child: Container(
+                                alignment: Alignment.center,
+                                constraints:
+                                    BoxConstraints(maxHeight: 16, maxWidth: 16),
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFF3B30),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                padding: EdgeInsets.all(2),
+                                child: Text(
+                                  badge,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SizedBox.shrink(),
                     ],
                   ),
                 ),

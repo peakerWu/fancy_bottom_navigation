@@ -94,16 +94,16 @@ class _MyHomePageState extends State<MyHomePage> {
         activeTextColor: Color(0xff4D91F7),
         inactiveIconColor: Color(0xff999999),
         // circleColor: Color(0xff4D91F7),
-        gradient: LinearGradient(
-          colors: [
-            Color(0xff69ADF9),
-            Color(0xff4C91F6),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        // gradient: LinearGradient(
+        //   colors: [
+        //     Color(0xff69ADF9),
+        //     Color(0xff4C91F6),
+        //   ],
+        //   begin: Alignment.topLeft,
+        //   end: Alignment.bottomRight,
+        // ),
         textColor: Color(0xff999999),
-        onTabChangedListener: (position) {
+        onTabChangedListener: (position, index) {
           setState(() {
             currentPage = position;
           });
