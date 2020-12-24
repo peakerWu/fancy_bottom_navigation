@@ -21,6 +21,7 @@ class TabItem extends StatelessWidget {
     this.activeIconColor,
     this.selectedIconData,
     this.badge,
+    this.fontSize = 10,
   });
 
   final UniqueKey uniqueKey;
@@ -31,6 +32,7 @@ class TabItem extends StatelessWidget {
   final bool selected;
   final Function(UniqueKey uniqueKey, bool selected) callbackFunction;
   final Color textColor;
+  final double fontSize;
   final Color activeTextColor;
   final Color iconColor;
   final Color activeIconColor;
@@ -100,8 +102,8 @@ class TabItem extends StatelessWidget {
                 child: Text(
                   title,
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 10,
+                    fontWeight: FontWeight.normal,
+                    fontSize: fontSize,
                     color: selected ? activeTextColor : textColor,
                   ),
                 ),
