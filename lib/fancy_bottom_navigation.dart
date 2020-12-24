@@ -152,6 +152,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                     textColor: textColor,
                     activeTextColor: activeTextColor,
                     badge: t.badge,
+                    fontSize: t.fontSize,
                     callbackFunction: (uniqueKey, selected) {
                       int selectedIndex = widget.tabs
                           .indexWhere((tabData) => tabData.key == uniqueKey);
@@ -304,12 +305,14 @@ class TabData {
     @required this.title,
     this.badge,
     this.onclick,
+    this.fontSize = 10,
   });
 
   IconData iconData;
   IconData selectedIconData;
   String title;
   String badge;
+  double fontSize;
   Function onclick;
   final UniqueKey key = UniqueKey();
 }
