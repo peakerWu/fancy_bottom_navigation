@@ -29,7 +29,7 @@ class FancyBottomNavigation extends StatefulWidget {
     this.gradient,
   })  : assert(onTabChangedListener != null),
         assert(tabs != null),
-        assert(tabs.length > 1 && tabs.length < 5);
+        assert(tabs.length > 1 && tabs.length < 6);
 
   final Function(int position, bool selected) onTabChangedListener;
   final Color circleColor;
